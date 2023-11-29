@@ -11,16 +11,16 @@ export default defineEventHandler(async (event) => {
 
   const body = await readBody(event);
 
-  const data: Prisma.FavouriteMealCreateInput = {
-    idMeal: body.idMeal,
-    strMeal: body.strMeal,
-    strMealThumb: body.strMealThumb ?? '',
-    User: { connect: { id: user.id } },
-  };
+  console.log({ body });
 
   try {
     const favouriteMeal = await prisma.favouriteMeal.create({
-      data: data,
+      data: {
+        idMeal: body.idMeal,
+        strMeal: body.strMeal,
+        strMealThumb: body.strMealThumb ?? "",
+        User: { connect: { id: user.id } },
+      },
     });
 
     return favouriteMeal;
