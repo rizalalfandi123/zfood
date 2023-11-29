@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
   const data: Prisma.FavouriteMealCreateInput = {
     idMeal: body.idMeal,
     strMeal: body.strMeal,
-    strMealThumb: body.strMealThumb,
+    strMealThumb: body.strMealThumb ?? '',
     User: { connect: { id: user.id } },
   };
 
