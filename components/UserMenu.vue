@@ -20,7 +20,7 @@ const handleFavouriteMeals = () => {
 
     <div
       :class="[
-        'top-12 border border-gray-300 rounded-lg right-0 absolute p-2 hidden bg-slate-50',
+        'top-12 border border-gray-300 rounded-lg right-0 absolute p-2 hidden bg-background',
         'group-hover/user-menu:block',
       ]"
     >

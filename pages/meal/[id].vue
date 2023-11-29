@@ -59,8 +59,8 @@ const { data } = await useLazyFetch(
                   type="checkbox"
                   name="ingredients"
                   :class="[
-                    'rounded border-gray-300 text-primary focus:border-primary',
-                    'focus:ring-1 focus:ring-primary',
+                    'rounded border-gray-300 text-primary focus:border-primary bg-background',
+                    'focus:ring-1 focus:ring-primary focus:ring-offset-background',
                   ]"
                 />
               </td>

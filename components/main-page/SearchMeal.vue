@@ -21,7 +21,7 @@ const handleChangeSearchValue = (e: Event) => {
       type="text"
       @input="handleChangeSearchValue"
       :value="searchValue"
-      class="md:w-72"
+      class="bg-background md:w-72"
       placeholder="Search ..."
     />
   </section>

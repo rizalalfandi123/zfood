@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header class="border-b border-b-gray-300 sticky top-0 right-0 z-10 bg-slate-50">
+    <header class="border-b border-b-gray-300 sticky top-0 right-0 z-10 bg-background">
       <Header class="limit-width-content" />
     </header>
 
