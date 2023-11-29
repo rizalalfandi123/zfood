@@ -19,7 +19,11 @@ const addToFavourite = async () => {
 
     const meal = await $fetch("/api/favourite-meal", {
       method: "POST",
-      body: props.meal,
+      body: {
+        idMeal: props.meal?.idMeal ?? "",
+        strMeal: props.meal?.strMeal ?? "",
+        strMealThumb: props.meal?.strMealThumb ?? "",
+      },
     });
 
     store.commit("auth.add-favourite-meal", {
