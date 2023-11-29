@@ -2,16 +2,12 @@ function useDebounce<T>(value: globalThis.ComputedRef<T>) {
   const debounceValue = useState<T>();
 
   watch(value, async () => {
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve('')
-      }, 1.5 * 1000);
-    });
+    await delay(1.5 * 1000);
 
-    debounceValue.value = value.value
+    debounceValue.value = value.value;
   });
 
-  return debounceValue
+  return debounceValue;
 }
 
-export default useDebounce
+export default useDebounce;

@@ -7,16 +7,32 @@ interface DetailMealResponse {
 
 const route = useRoute();
 
-const { data, pending } = await useFetch(
+const store = useVuexStore();
+
+const { data } = await useFetch(
   `https://www.themealdb.com/api/json/v1/1/lookup.php`,
   {
     query: {
       i: route.params.id,
     },
-
     transform: (response: DetailMealResponse) => response.meals[0] ?? {},
   }
 );
+
+const addToFavourite = async () => {
+  await $fetchWithAuth("/api/favourite-meal", {
+    method: "POST",
+    body: {
+      idMeal: data.value?.idMeal ?? "",
+      strMeal: data.value?.strMeal ?? "",
+    },
+  });
+
+  store.commit("auth.add-favourite-meal", {
+    idMeal: data.value?.idMeal,
+    strMeal: data.value?.strMeal,
+  });
+};
 </script>
 
 <template>
@@ -33,6 +49,8 @@ const { data, pending } = await useFetch(
     />
     <div>
       <h2 class="text-3xl font-medium">{{ data?.strMeal }}</h2>
+
+      <button @click="addToFavourite">add to vaforite</button>
 
       <div>
         <h3>Instructions</h3>

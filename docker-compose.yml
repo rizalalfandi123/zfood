@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  zfood:
+    build: .
+    container_name: zfood-app
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    volumes:
+      - ./prisma:/opt/app/prisma
+    env_file:
+      - .env

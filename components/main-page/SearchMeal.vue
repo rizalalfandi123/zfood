@@ -17,15 +17,11 @@ const handleChangeSearchValue = (e: Event) => {
   <section
     class="w-full flex flex-col gap-2 justify-between items-center md:flex-row"
   >
-    <input
+    <Input
       type="text"
       @input="handleChangeSearchValue"
       :value="searchValue"
-      :class="[
-        'py-2 px-4 rounded-lg border-none outline outline-1 outline-gray-400 w-full',
-        'focus:ring-primary focus:border-none',
-        'md:w-72',
-      ]"
+      class="md:w-72"
       placeholder="Search ..."
     />
   </section>

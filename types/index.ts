@@ -56,8 +56,17 @@ export interface MealListResponse {
   meals: Array<Meal>;
 }
 
+export interface User {
+  id: string;
+  name: string | null;
+  email: string;
+  token: string
+  favouriteMeals: Array<Meal>
+}
+
 export interface GlobalState {
   ["filter-meal"]: {
     search: string;
   };
+  auth: { user: User | null };
 }
