@@ -1,12 +1,6 @@
-<script setup lang="ts">
-const store = useVuexStore();
-
-const user = computed(() => store.state.auth.user);
-</script>
-
 <template>
-  <header
-    class="py-4 flex justify-between items-center sticky top-0 right-0 z-10 bg-slate-50"
+  <div
+    class="py-4 flex justify-between items-center"
   >
     <NuxtLink to="/" class="flex items-center hover:text-primary">
       <IconsHemburger class="mr-2" />
@@ -14,13 +8,7 @@ const user = computed(() => store.state.auth.user);
     </NuxtLink>
 
     <div>
-      <p v-if="user">{{ user.email }}</p>
-      <NuxtLink
-        v-else
-        to="/login"
-        class="px-4 py-1.5 bg-primary text-white hover:bg-primary/75 rounded-lg"
-        >Login</NuxtLink
-      >
+      <UserMenu />
     </div>
-  </header>
+  </div>
 </template>

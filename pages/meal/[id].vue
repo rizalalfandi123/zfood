@@ -7,9 +7,7 @@ interface DetailMealResponse {
 
 const route = useRoute();
 
-const store = useVuexStore();
-
-const { data } = await useFetch(
+const { data } = await useLazyFetch(
   `https://www.themealdb.com/api/json/v1/1/lookup.php`,
   {
     query: {
@@ -18,42 +16,68 @@ const { data } = await useFetch(
     transform: (response: DetailMealResponse) => response.meals[0] ?? {},
   }
 );
-
-const addToFavourite = async () => {
-  await $fetchWithAuth("/api/favourite-meal", {
-    method: "POST",
-    body: {
-      idMeal: data.value?.idMeal ?? "",
-      strMeal: data.value?.strMeal ?? "",
-    },
-  });
-
-  store.commit("auth.add-favourite-meal", {
-    idMeal: data.value?.idMeal,
-    strMeal: data.value?.strMeal,
-  });
-};
 </script>
 
 <template>
-  <div>
-    <!-- <div :class="['flex flex-col gap-4', 'lg:flex-row']"> -->
-    <img
-      :src="data?.strMealThumb"
-      :alt="data?.strMeal"
-      :class="[
-        'w-full h-80 object-cover rounded-xl',
-        'md:h-[50vh] md:float-left',
-        'lg:w-[45%] lg:shrink-0 lg:h-[75vh]',
-      ]"
-    />
-    <div>
-      <h2 class="text-3xl font-medium">{{ data?.strMeal }}</h2>
+  <div class="flex flex-col gap-8 items-center">
+    <BackPage to="/" />
 
-      <button @click="addToFavourite">add to vaforite</button>
+    <div class="relative">
+      <FavouriteMealStart class="absolute top-2 right-2" :id-meal="data?.idMeal" />
+      <img
+        :src="data?.strMealThumb"
+        :alt="data?.strMeal"
+        :class="[
+          'w-auto h-80 object-cover rounded-xl',
+          'md:h-96',
+          'lg:h-[32rem]',
+        ]"
+      />
+    </div>
 
-      <div>
-        <h3>Instructions</h3>
+    <p class="text-center text-3xl font-medium">{{ data?.strMeal }}</p>
+
+    <div class="flex flex-col w-full gap-4 md:flex-row md:flex-1">
+      <div class="space-y-2 md:flex-[0.5]">
+        <h1 class="text-xl font-medium">Ingredients</h1>
+
+        <table
+          class="table-fixed border-collapse border border-slate-500 w-full"
+        >
+          <thead>
+            <tr>
+              <td class="border border-slate-500 p-2 w-10 text-center">#</td>
+              <td class="border border-slate-500 p-2">Ingredient</td>
+              <td class="border border-slate-500 p-2">Measure</td>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr v-for="ingredient in getIngredientAndMeasureMeal(data)">
+              <td class="border border-slate-500 p-2 text-center">
+                <input
+                  type="checkbox"
+                  name="ingredients"
+                  :class="[
+                    'rounded border-gray-300 text-primary focus:border-primary',
+                    'focus:ring-1 focus:ring-primary',
+                  ]"
+                />
+              </td>
+              <td class="border border-slate-500 p-2">
+                {{ ingredient.ingredient }}
+              </td>
+              <td class="border border-slate-500 p-2">
+                {{ ingredient.measure }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="space-y-2 md:flex-[0.5]">
+        <h1 class="text-xl font-medium">Instructions</h1>
+
         <p
           v-for="sentence in (data?.strInstructions ?? '').split('\n')"
           class="my-1"
@@ -61,16 +85,7 @@ const addToFavourite = async () => {
           {{ sentence }}
         </p>
       </div>
-
-      <div>
-        <h3>Ingredients</h3>
-        <ol class="list-decimal list-inside">
-          <li v-for="ingredient in getIngredientAndMeasureMeal(data)">
-            {{ ingredient.ingredient }} ({{ ingredient.measure }})
-          </li>
-        </ol>
-      </div>
     </div>
+    <DetailMealToggleFavourite :meal="data" class="self-end w-fit" />
   </div>
-  <!-- </div> -->
 </template>

@@ -1,14 +1,19 @@
 import jwt from "jsonwebtoken";
 
 export default defineEventHandler(async (event) => {
-  const token = getRequestHeader(event, "Authorization");
+  const authCookie = getCookie(event, "auth");
 
-  if (token) {
-    const decodeToken = jwt.verify(token, "shhhhh") as {
+  console.log({authCookie})
+  if (authCookie && authCookie !== 'null') {
+    const parseAuthCookie = JSON.parse(authCookie);
+
+    const decodeToken = jwt.verify(parseAuthCookie.token, "shhhhh") as {
       email: string;
       id: string;
     };
 
+
     event.context.user = decodeToken;
   }
+
 });

@@ -7,7 +7,7 @@ const searchValue = computed(() => store.state["filter-meal"].search);
 
 const debounceSearchValue = useDebounce<string>(searchValue);
 
-const { data, pending } = await useAsyncData<MealListResponse>(
+const { data, pending } = await useLazyAsyncData<MealListResponse>(
   "meals",
   () =>
     $fetch("https://www.themealdb.com/api/json/v1/1/search.php", {

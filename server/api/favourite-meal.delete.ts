@@ -11,19 +11,16 @@ export default defineEventHandler(async (event) => {
 
   const body = await readBody(event);
 
-  const data: Prisma.FavouriteMealCreateInput = {
-    idMeal: body.idMeal,
-    strMeal: body.strMeal,
-    strMealThumb: body.strMealThumb,
-    User: { connect: { id: user.id } },
-  };
-
   try {
-    const favouriteMeal = await prisma.favouriteMeal.create({
-      data: data,
+    const favouriteMeals = await prisma.favouriteMeal.delete({
+      where: {
+        idMeal: body.idMeal,
+        userId: user.id,
+        id: body.id
+      },
     });
 
-    return favouriteMeal;
+    return favouriteMeals;
   } catch (error) {
     console.log({ error });
     setResponseStatus(event, 400);

@@ -15,9 +15,6 @@ export default defineEventHandler(async (event) => {
         id: true,
         password: true,
         name: true,
-        favouriteMeals: {
-          select: { idMeal: true },
-        },
       },
     });
 
@@ -42,7 +39,7 @@ export default defineEventHandler(async (event) => {
 
     const token = await jwt.sign(user, "shhhhh");
 
-    return { ...user, token, favouriteMeals: userExist.favouriteMeals };
+    return { ...user, token };
   } catch (error) {
     console.log({ error });
     setResponseStatus(event, 400);

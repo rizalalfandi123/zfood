@@ -21,12 +21,12 @@ const handleSubmit = async (e: Event) => {
   try {
     pendingFormSubmit.value = true;
 
-    const res = await $fetch("/api/register", {
+    const user = await $fetch("/api/register", {
       method: "POST",
       body: formData,
     });
 
-    store.commit("auth.set-user", res);
+    store.commit("auth.set-user", user);
 
     router.push("/");
   } catch (error) {

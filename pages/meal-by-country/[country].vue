@@ -16,8 +16,10 @@ const { data, pending } = await useFetch<MealListResponse>(
 <template>
   <div class="space-y-6">
     <section class="space-y-5">
+      <BackPage to="/" />
+
       <h1 class="text-2xl font-medium tracking-wide">
-        {{ route.params.country }}
+        Meals from {{ route.params.country }}
       </h1>
       <MealList :pending="pending" :meals="data?.meals ?? []" />
     </section>

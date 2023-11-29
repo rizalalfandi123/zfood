@@ -2,6 +2,7 @@ export interface Meal {
   idMeal: string;
   strMeal: string;
   strMealThumb: string;
+  strYoutube: string;
   strInstructions: string;
   strIngredient1: string;
   strIngredient2: string;
@@ -60,13 +61,12 @@ export interface User {
   id: string;
   name: string | null;
   email: string;
-  token: string
-  favouriteMeals: Array<Meal>
+  token: string;
 }
 
 export interface GlobalState {
   ["filter-meal"]: {
     search: string;
   };
-  auth: { user: User | null };
+  auth: { user: User | null; favouriteMeals: Array<Meal & { id: string }> };
 }

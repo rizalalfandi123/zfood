@@ -8,14 +8,6 @@ interface MealProps {
 const props = defineProps<MealProps>();
 
 const store = useVuexStore();
-
-const isFavourite = computed(() => {
-  const user = store.state.auth.user;
-
-  if (!user) return false;
-
-  return user.favouriteMeals.some((meal) => meal.idMeal === props.meal.idMeal);
-});
 </script>
 
 <template>
@@ -29,9 +21,9 @@ const isFavourite = computed(() => {
       'md:hover:!grayscale-0 md:group-hover/meal-list:grayscale-[0.75]',
     ]"
   >
-    <IconsStart
-      v-show="isFavourite"
-      class="text-primary absolute top-1 right-1"
+    <FavouriteMealStart
+      class="absolute top-1 right-1"
+      :idMeal="props.meal.idMeal"
     />
     <img
       :src="meal.strMealThumb"

@@ -26,15 +26,12 @@ export default defineEventHandler(async (event) => {
         id: true,
         password: true,
         name: true,
-        favouriteMeals: {
-          select: { idMeal: true },
-        },
       },
     });
 
     const token = jwt.sign(user, "shhhhh");
 
-    return { ...user, token, favouriteMeals: user.favouriteMeals };
+    return { ...user, token };
   } catch (error) {
     setResponseStatus(event, 400);
   }

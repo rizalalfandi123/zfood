@@ -15,12 +15,16 @@ const handleSubmit = async (e: Event) => {
   try {
     pendingFormSubmit.value = true;
 
-    const res = await $fetch("/api/login", {
+    const user = await $fetch("/api/login", {
       method: "POST",
       body: formData,
     });
 
-    store.commit("auth.set-user", res);
+    store.commit("auth.set-user", user);
+
+    await delay(1 * 1000);
+
+    store.dispatch("getFavouriteMeals");
 
     router.push("/");
   } catch (error) {
@@ -52,9 +56,7 @@ watch(formErrorMessage, async (errorMessage) => {
       </Alert>
 
       <h1 class="text-2xl font-medium">Login into your account</h1>
-      <template>
-        <h1>Login</h1>
-      </template>
+
       <form
         method="post"
         @submit.prevent="handleSubmit"

@@ -1,31 +1,63 @@
-import type { GlobalState, Meal, User } from "~/types";
+import type { Store } from "vuex";
+import type { GlobalState, User } from "~/types";
 
 type State = GlobalState["auth"];
 
 export const state = (): State => ({
-  user: (function () {
-    if (typeof window === "undefined") return null;
-
-    const storedData = localStorage.getItem("auth");
-
-    if (!storedData) {
-      return null;
-    }
-
-    return JSON.parse(storedData);
-  })(),
+  user: null,
+  favouriteMeals: [],
 });
 
 export const mutations = {
   ["auth.set-user"](state: State, payload: User) {
-    localStorage.setItem("auth", JSON.stringify(payload));
     state.user = payload;
   },
-  ["auth.add-favourite-meal"](state: State, payload: Meal) {
+
+  ["auth.add-favourite-meal"](
+    state: State,
+    payload: State["favouriteMeals"][number] | State["favouriteMeals"]
+  ) {
     if (state.user) {
-      state.user.favouriteMeals = [...state.user.favouriteMeals, payload];
+      if (Array.isArray(payload)) {
+        state.favouriteMeals = payload;
+      } else {
+        state.favouriteMeals = [...state.favouriteMeals, payload];
+      }
     }
+  },
+
+  ["auth.remove-favourite-meal"](state: State, idMeal: string) {
+    if (state.user) {
+      state.favouriteMeals = state.favouriteMeals.filter(
+        (meal) => meal.idMeal !== idMeal
+      );
+    }
+  },
+
+  ["clear"](state: State) {
+    state.user = null;
+    state.favouriteMeals = [];
   },
 };
 
-export default { mutations, state };
+const getters = {
+  isFavouriteMeal: (state: State) => (idMeal: string) => {
+    return state.favouriteMeals.some((meal) => meal.idMeal == idMeal);
+  },
+
+  isLogin: (state: State) => state.user !== null,
+
+  meal: (state: State) => (idMeal: string) => {
+    return state.favouriteMeals.find((meal) => meal.idMeal == idMeal);
+  },
+};
+
+const actions = {
+  getFavouriteMeals: (store: Store<GlobalState>) => {
+    $fetch("/api/favourite-meals").then((res) => {
+      store.commit("auth.add-favourite-meal", res);
+    });
+  },
+};
+
+export default { mutations, state, getters, actions };
