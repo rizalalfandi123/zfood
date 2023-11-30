@@ -6,4 +6,4 @@
 	 - Sqlite
 	 - Taypescript
 	 - Vuex
- - Resources : [Thea Meal DB](https://themealdb.com/api.php)
+ - Resources : [The Meal DB](https://themealdb.com/api.php)
